@@ -1,28 +1,40 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
+import { Context } from "../context"
 
-const Input = ({ reply, setUser }) => {
+const Input = ({ reply, setUser, setChatsArr, chatsArr }) => {
+  const { defRu } = useContext(Context)
   const [gptValue, setGptValue] = useState("")
-  const openai_api_key = "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"
-  async function fetchCompletions() {
-    const prompt = gptValue
-    const completionsEndpoint = "https://api.openai.com/v1/engines/text-davinci-003/completions"
-    const response = await fetch(completionsEndpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${openai_api_key}`,
-      },
-      body: JSON.stringify({
-        prompt: prompt,
-        max_tokens: 1000,
-        n: 1,
-        stop: "",
-        temperature: 0.5,
-      }),
-    })
-    const json = await response.json()
-    reply(json.choices[0].text)
+  const openai_api_key = "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"
+
+  function user() {
     setUser(gptValue)
+    async function fetchCompletions() {
+      const prompt = gptValue
+      const completionsEndpoint =
+        "https://api.openai.com/v1/engines/text-davinci-003/completions"
+      const response = await fetch(completionsEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${openai_api_key}`,
+        },
+        body: JSON.stringify({
+          prompt: prompt,
+          max_tokens: 1000,
+          n: 1,
+          stop: "",
+          temperature: 0,
+        }),
+      })
+      const json = await response.json()
+      reply(json.choices[0].text)
+      const obj = {
+        user: gptValue,
+        bot: json.choices[0].text
+      }
+      setChatsArr([...chatsArr, obj])
+    }
+    fetchCompletions()
   }
 
   const onSubmitHandler = (event) => {
@@ -30,48 +42,25 @@ const Input = ({ reply, setUser }) => {
     setGptValue("")
   }
 
-  // async function fetchModels() {
-  //   // const prompt = "most popular names in USA"
-  //   const completionsEndpoint = "https://api.openai.com/v1/models"
-  //   const response = await fetch(completionsEndpoint, {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${openai_api_key}`,
-  //     },
-  //   })
-
-  //   const json = await response.json()
-  //   // const completions = json.choices[0].text
-  //   json.data.map((model) => {
-  //     // model.root == "babbage"
-  //     console.log(model.owned_by);
-  //     console.log(model.root);
-  //     console.log(model);
-  //   })
-  //   // console.log(json.data)
-  //   // console.log(models);
-  // }
-  // fetchModels()
-
   return (
     <form
       onSubmit={onSubmitHandler}
       className="stretch mx-2 flex flex-row gap-3 pt-2 last:mb-2 md:last:mb-6 lg:mx-auto lg:max-w-3xl lg:pt-6"
     >
-      <div className="relative flex h-full flex-1 md:flex-col">
+      <div className="relative flex h-full flex-1 md:flex-col shadow-[0_0_10px_rgba(0,0,0,0.10)]">
         <input
           id="message"
           rows="4"
-          className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="javascript array methods "
+          className="block h-[60px] p-4 w-full text-sm text-gray-700 bg-gray-50 rounded-lg  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 text-[14px]"
+          placeholder={defRu.placeholder}
           value={gptValue}
           onChange={(e) => setGptValue(e.target.value)}
           onKeyDown={(e) => setGptValue(e.target.value)}
+          style={{ background: "rgba(64, 65, 79, 1" }}
         />
 
         <button
-          onClick={fetchCompletions}
+          onClick={user}
           className="absolute p-1 rounded-md text-gray-500 bottom-1.5 right-1 md:bottom-2.5 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
         >
           <svg
