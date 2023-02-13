@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: rgb(52, 53, 65);
+}
+
+h1 {
+  font-size: 44px;
+  font-weight: 500;
+}
+
+.container {
+  max-width: 960px;
+  width: 100%;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+.welcome {
+
+  &__table {
+    background-color: #3E3F4B;
+  }
+}
+
+input:focus, textarea:focus, select:focus{
+  outline: none;
+}
