@@ -1,17 +1,24 @@
 import React, { useState, useContext } from "react"
 import { Context } from "../context"
 
-const Input = ({ reply, setUser, setChatsArr, chatsArr }) => {
+const Input = ({
+  reply,
+  setUser,
+  setChatsArr,
+  chatsArr,
+  setUserArr,
+  userArr,
+}) => {
   const { defRu } = useContext(Context)
   const [gptValue, setGptValue] = useState("")
-  const openai_api_key = "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"
-
+  const openai_api_key = "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"
+  let [disabled, setDisabled] = useState(false)
   function user() {
     setUser(gptValue)
     async function fetchCompletions() {
       const prompt = gptValue
       const completionsEndpoint =
-        "https://api.openai.com/v1/engines/text-davinci-003/completions"
+        "https://api.openai.com/v1/engines/text-davinci-002/completions"
       const response = await fetch(completionsEndpoint, {
         method: "POST",
         headers: {
@@ -22,16 +29,18 @@ const Input = ({ reply, setUser, setChatsArr, chatsArr }) => {
           prompt: prompt,
           max_tokens: 1000,
           n: 1,
-          stop: "",
-          temperature: 0,
+          stop: "sorry",
+          temperature: 0.5,
         }),
       })
       const json = await response.json()
+
       reply(json.choices[0].text)
       const obj = {
         user: gptValue,
-        bot: json.choices[0].text
+        bot: json.choices[0].text,
       }
+
       setChatsArr([...chatsArr, obj])
     }
     fetchCompletions()
@@ -40,6 +49,10 @@ const Input = ({ reply, setUser, setChatsArr, chatsArr }) => {
   const onSubmitHandler = (event) => {
     event.preventDefault()
     setGptValue("")
+    const userName = {
+      user: gptValue,
+    }
+    setUserArr([...userArr, userName])
   }
 
   return (
@@ -57,10 +70,12 @@ const Input = ({ reply, setUser, setChatsArr, chatsArr }) => {
           onChange={(e) => setGptValue(e.target.value)}
           onKeyDown={(e) => setGptValue(e.target.value)}
           style={{ background: "rgba(64, 65, 79, 1" }}
+          disabled={disabled}
         />
 
         <button
           onClick={user}
+          disabled={disabled}
           className="absolute p-1 rounded-md text-gray-500 bottom-1.5 right-1 md:bottom-2.5 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
         >
           <svg

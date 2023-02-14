@@ -111,13 +111,16 @@ function App() {
     }
   }
 
+  // const itemBot = (item) => {
+
+  // }
+
   const [reply, setReply] = useState("")
   const [user, setUser] = useState("")
   const [chatsArr, setChatsArr] = useState([])
-
-  // console.log("chatsObj: ", chatsArr)
-  // console.log("reply: ", reply)
-  // console.log("user :", user)
+  const [userArr, setUserArr] = useState([])
+  console.log("userArr", userArr)
+  console.log("chatsArr", chatsArr)
 
   return (
     <Context.Provider value={{ defRu, langHandler, lang }}>
@@ -126,14 +129,14 @@ function App() {
           <Lang />
         </div>
         {user.length > 0 &&
-          chatsArr.map((item, index) => (
+          userArr.map((userItem, index) => (
             <div key={index} className="chat">
               <div
                 style={{ padding: "20px" }}
                 className="container gap-3 p-10 text-white min-h-[100px] flex items-start"
               >
                 <img className="w-6 h-6 rounded-sm" src={userImg} alt="" />
-                <p style={{ maxWidth: "800px" }}>{item.user}</p>
+                <p style={{ maxWidth: "800px" }}>{userItem.user}</p>
               </div>
               <div className="bg-[#444658]">
                 <div
@@ -141,7 +144,14 @@ function App() {
                   className="container gap-3 p-10 text-white min-h-[100px] flex items-start bg-[#444658]"
                 >
                   <img className="w-6 h-6 rounded-sm" src={chatImg} alt="" />
-                  <p style={{ maxWidth: "800px" }}>{item.bot}</p>
+                  <p style={{ maxWidth: "800px" }}>
+                    {chatsArr.map((item, i) => {
+                      <div className="think"></div>
+                      if (item.user === userItem.user) {
+                        return item.bot
+                      }
+                    })}  
+                  </p>
                 </div>
               </div>
             </div>
@@ -158,6 +168,8 @@ function App() {
             setUser={setUser}
             chatsArr={chatsArr}
             setChatsArr={setChatsArr}
+            setUserArr={setUserArr}
+            userArr={userArr}
           />
         </div>
       </div>
