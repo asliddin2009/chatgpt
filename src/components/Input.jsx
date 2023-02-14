@@ -14,7 +14,7 @@ const Input = ({
   const openai_api_key = "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"
   let [disabled, setDisabled] = useState(false)
   function user() {
-    setUser(gptValue)
+    setUser(gptValue) 
     async function fetchCompletions() {
       const model = "text-babbage-001"
       const prompt = gptValue
