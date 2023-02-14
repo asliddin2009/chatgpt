@@ -16,9 +16,10 @@ const Input = ({
   function user() {
     setUser(gptValue)
     async function fetchCompletions() {
+      const model = 'text-davinci-002' || "text-davinci-003"
       const prompt = gptValue
       const completionsEndpoint =
-        "https://api.openai.com/v1/engines/text-davinci-002/completions"
+        `https://api.openai.com/v1/engines/${model}/completions`
       const response = await fetch(completionsEndpoint, {
         method: "POST",
         headers: {
