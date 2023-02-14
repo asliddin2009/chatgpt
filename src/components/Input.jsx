@@ -11,15 +11,14 @@ const Input = ({
 }) => {
   const { defRu } = useContext(Context)
   const [gptValue, setGptValue] = useState("")
-  const openai_api_key = "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"
+  const openai_api_key = "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"
   let [disabled, setDisabled] = useState(false)
   function user() {
     setUser(gptValue)
     async function fetchCompletions() {
-      const model = 'text-davinci-002' || "text-davinci-003"
+      const model = "text-davinci-001"
       const prompt = gptValue
-      const completionsEndpoint =
-        `https://api.openai.com/v1/engines/${model}/completions`
+      const completionsEndpoint = `https://api.openai.com/v1/engines/${model}/completions`
       const response = await fetch(completionsEndpoint, {
         method: "POST",
         headers: {
@@ -46,6 +45,23 @@ const Input = ({
     }
     fetchCompletions()
   }
+
+  // async function test() {
+  //   const completionsEndpoint = `https://api.openai.com/v1/models`
+  //   const response = await fetch(completionsEndpoint, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${openai_api_key}`,
+  //     }
+  //   })
+  //   const json = await response.json()
+  //   console.log(json);
+  // }
+
+  // test()
+  // fetchCompletions()
+  // }
 
   const onSubmitHandler = (event) => {
     event.preventDefault()
