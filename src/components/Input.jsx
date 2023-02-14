@@ -11,12 +11,12 @@ const Input = ({
 }) => {
   const { defRu } = useContext(Context)
   const [gptValue, setGptValue] = useState("")
-  const openai_api_key = "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"
+  const openai_api_key = "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"
   let [disabled, setDisabled] = useState(false)
   function user() {
     setUser(gptValue)
     async function fetchCompletions() {
-      const model = "text-davinci-001"
+      const model = "text-babbage-001"
       const prompt = gptValue
       const completionsEndpoint = `https://api.openai.com/v1/engines/${model}/completions`
       const response = await fetch(completionsEndpoint, {
