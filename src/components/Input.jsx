@@ -11,7 +11,7 @@ const Input = ({
 }) => {
   const { defRu } = useContext(Context)
   const [gptValue, setGptValue] = useState("")
-  const openai_api_key = "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"
+  const openai_api_key = "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"
   let [disabled, setDisabled] = useState(false)
   function user() {
     setUser(gptValue)
